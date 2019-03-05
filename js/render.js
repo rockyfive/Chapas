@@ -150,12 +150,40 @@ function updateCanvas() {
 
 function openFullscreen(elem) {
     if (elem.requestFullscreen) {
-      elem.requestFullscreen();
+      elem.requestFullscreen().then(correctProportion);
     } else if (elem.mozRequestFullScreen) { /* Firefox */
-      elem.mozRequestFullScreen();
+      elem.mozRequestFullScreen().then(correctProportion);
     } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-      elem.webkitRequestFullscreen();
+      elem.webkitRequestFullscreen().then(correctProportion);
     } else if (elem.msRequestFullscreen) { /* IE/Edge */
-      elem.msRequestFullscreen();
+      elem.msRequestFullscreen().then(correctProportion);
     }
+    
+    function correctProportion() {
+        
+        const PROPORTION = elem.clientWidth / elem.clientHeight;
+        const fullscreenProp = elem.width / elem.height;
+        console.log(PROPORTION);
+        console.log(fullscreenProp);
+        if (PROPORTION < fullscreenProp) {
+            fsMarginTop = (elem.width - elem.width * elem.clientHeight / elem.clientWidth) / 2;
+            gameHeight = elem.width * elem.clientHeight / elem.clientWidth;
+        } else {
+            fsMarginLeft = (elem.width - PROPORTION * elem.height) / 2;
+            gameWidth = PROPORTION * elem.height;
+        }
+
+        elem.addEventListener("fullscreenchange", exitHandler, false);
+    }
+
   }
+function exitHandler(e) {
+
+    if (document.fullscreenElement == null) {
+    gameHeight = e.target.height;
+    gameWidth = e.target.width;
+    fsMarginLeft = 0;
+    fsMarginTop = 0;
+    e.target.removeEventListener("fullscreenchange", exitHandler);
+}
+}

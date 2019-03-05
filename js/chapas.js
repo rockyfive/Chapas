@@ -5,6 +5,11 @@ let ys;
 const velx = new Array(XS.length);
 const vely = new Array(XS.length);
 
+let gameWidth = gameCanvas.width;
+let gameHeight = gameCanvas.height;
+let fsMarginLeft = 0;
+let fsMarginTop = 0;
+
 let isClicked = false;
 let isMoved = false;
 let turno;
