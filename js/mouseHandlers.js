@@ -2,7 +2,7 @@
 $(document).ready(function(){   
 
 
-    $("#myCanvas").mousedown(function(e) {
+    $("#myGame").mousedown(function(e) {
         /* Esta función reacciona al hacer clic, dependiendo del estado del juego:
          *
          * Estado 0: Pantalla de título
@@ -16,6 +16,7 @@ $(document).ready(function(){
             case 0:
                 screenSelectTeam(imageJugador1, '#8ED6FF', '#004CB3');
                 estado++;
+                openFullscreen(document.getElementById("gameDiv"));
                 break;            
             case 1:
                 numChapa = checkClickBall(e, posxs, posys, equipoString.length, SEL_RADIO);
@@ -57,9 +58,9 @@ $(document).ready(function(){
         // para cada evento de movimiento de ratón.
         if (isClicked) {
         	isMoved = true;
-            const rect = canvas.getBoundingClientRect();
+            const rect = gameCanvas.getBoundingClientRect();
             xDist = e.pageX - rect.left - xs[numChapa] - window.scrollX;
-            yDist = e.pageY - rect.top - ys[numChapa] - window.scrollY;
+            yDist = e.pageY - rect.top - ys[numChapa] - window.scrollY - resCanvas.height;
             dist = Math.sqrt(xDist * xDist + yDist * yDist);
         }
 
@@ -84,10 +85,10 @@ $(document).ready(function(){
 
 function checkClickBall(e, x, y, len, radio) {
     // La función comprueba si el ratón está encima de una chapa y devuelve el número de la chapa.
-	const rect = canvas.getBoundingClientRect();
+	const rect = gameCanvas.getBoundingClientRect();
     for (let i = 0; i < len; i++) {
         xDist = e.pageX - rect.left - x[i%x.length] - window.scrollX;
-        yDist = e.pageY - rect.top - y[i%y.length] - window.scrollY;
+        yDist = e.pageY - rect.top - y[i%y.length] - window.scrollY - resCanvas.height;
         const distance = Math.sqrt(xDist * xDist + yDist * yDist);
         if (distance < radio) {
             return i;

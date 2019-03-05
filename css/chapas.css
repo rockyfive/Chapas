@@ -3,8 +3,8 @@ body {
 	background-color: grey;
 }
 
-.chapasDiv {
-	width:900px;
+#canvasDiv {
+	width:800px;
 	height:540px;
 	padding:10px;
 	margin-left:-450px;
@@ -15,7 +15,7 @@ body {
     left: 50%;
 }
 
-canvas {
+#myGame {
 	display: block;
 }
 

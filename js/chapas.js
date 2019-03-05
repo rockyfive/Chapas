@@ -19,3 +19,5 @@ let estado = 0;
 
 imageLogo.onload=function(){loadGame()};
 
+
+

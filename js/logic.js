@@ -5,7 +5,7 @@ function loadGame(){
 
 	resetPos();
 	goles = [0, 0];
-	turno = 1;
+    turno = 1;
 }
 
 function resetPos() {
@@ -32,6 +32,7 @@ function gol(equipo) {
         return screenVictory(equipo % 2 + 1);
         
     drawGol();
+    updateCanvas();
 
     setTimeout(() => {
         resetPos();
@@ -58,6 +59,8 @@ function update() {
     solveUpperBottomCollision();
     solveBallCollision();
     solveTurnChange();
+
+    updateCanvas();
 
     setTimeout(() => update(), 10);     
 }
