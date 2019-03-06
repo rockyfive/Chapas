@@ -167,10 +167,10 @@ function openFullscreen(elem) {
         console.log(PROPORTION);
         console.log(fullscreenProp);
         if (PROPORTION < fullscreenProp) {
-            marginTop = (elem.width - elem.width * elem.clientHeight / elem.clientWidth) / 2;
+            fsMarginTop = (elem.width - elem.width * elem.clientHeight / elem.clientWidth) / 2;
             gameHeight = elem.width * elem.clientHeight / elem.clientWidth;
         } else {
-            marginLeft = (elem.width - PROPORTION * elem.height) / 2;
+            fsMarginLeft = (elem.width - PROPORTION * elem.height) / 2;
             gameWidth = PROPORTION * elem.height;
         }
 
@@ -179,12 +179,13 @@ function openFullscreen(elem) {
 
   }
 function exitHandler(e) {
-
+    console.log(e.type);
     if (document.fullscreenElement == null) {
+        console.log('exit');
     gameHeight = e.target.height;
     gameWidth = e.target.width;
-    marginLeft = 0;
-    marginTop = 0;
+    fsMarginLeft = 0;
+    fsMarginTop = 0;
     e.target.removeEventListener("fullscreenchange", exitHandler);
 }
 }
