@@ -9,7 +9,7 @@ function startup() {
     gameCanvas.addEventListener("mousedown", handleStart, false);
     gameCanvas.addEventListener("mousemove", handleMove, false);
     gameCanvas.addEventListener("mouseup", handleEnd, false);
-    
+
     loadGame();
   }
 
@@ -122,8 +122,8 @@ function getDistance(e, ix, iy, x, y) {
         rectLeft = rect.left;
         rectTop = rect.top;
     }
-    let xDist = (e.offsetX / gameCanvas.clientWidth) * gameWidth - x[ix] + fsMarginLeft - rectLeft;
-    let yDist = (e.offsetY / gameCanvas.clientHeight) * gameHeight - resCanvas.height - y[iy] + fsMarginTop -rectTop;
+    let xDist = (e.offsetX / gameCanvas.clientWidth) * gameWidth - x[ix] + fsMarginLeft - rectLeft - window.scrollX;
+    let yDist = (e.offsetY / gameCanvas.clientHeight) * gameHeight - resCanvas.height - y[iy] + fsMarginTop -rectTop - window.scrollY;
     let dist = Math.sqrt(xDist * xDist + yDist * yDist);
 
     return [xDist, yDist, dist];
