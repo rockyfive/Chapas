@@ -1,18 +1,21 @@
 "use strict";
 
 function startup() {
-    //gameCanvas.addEventListener("touchstart", handleStart, false);
-    //gameCanvas.addEventListener("touchend", handleEnd, false);
-    //gameCanvas.addEventListener("touchmove", handleMove, false);
-    //gameCanvas.addEventListener("touchcancel", handleEnd, false);
+    gameCanvas.addEventListener("touchstart", handleStart, false);
+    gameCanvas.addEventListener("touchend", handleEnd, false);
+    gameCanvas.addEventListener("touchmove", handleMove, false);
+    gameCanvas.addEventListener("touchcancel", handleEnd, false);
 
     gameCanvas.addEventListener("mousedown", handleStart, false);
     gameCanvas.addEventListener("mousemove", handleMove, false);
     gameCanvas.addEventListener("mouseup", handleEnd, false);
-    console.log("initialized.");
+    
+    loadGame();
   }
 
   function handleStart(e) {
+    e.preventDefault();
+    //console.log(e.type);
     /* Esta función reacciona al hacer clic, dependiendo del estado del juego:
      *
      * Estado 0: Pantalla de título
@@ -26,12 +29,9 @@ function startup() {
         case 0:
             screenSelectTeam(imageJugador1, '#8ED6FF', '#004CB3');
             estado++;
-            console.log(gameCanvas.clientHeight);
-            openFullscreen(gameCanvas);
-            console.log(gameCanvas.clientHeight);
+            //openFullscreen(gameCanvas);
             break;            
         case 1:
-            console.log(gameCanvas.clientHeight);
             numChapa = checkClickBall(e, posxs, posys, equipoString.length, SEL_RADIO);
             if (numChapa != null) {
                 imageChapa[1].src = equipoString[numChapa];
@@ -50,6 +50,7 @@ function startup() {
         case 3:
             numChapa = checkClickBall(e, xs, ys, xs.length, CHAPA_RADIO);
             if (numChapa != 0 && Math.ceil(numChapa / 5) == turno) {
+                console.log('seleccionada:' + numChapa);
                 isClicked = true;
                 isMoved = false;
             }
@@ -57,27 +58,32 @@ function startup() {
         case 4:
             break;
         case 5:
-            screenTitle();
+            loadGame();
             estado = 0;
             break;
     }
 }
 
   function handleMove(e) {
+    e.preventDefault();
+    //console.log(e.type);
     // Esta función se ejecuta mientras el jugador 
     // está clicando una de sus chapas en su turno,
     // para cada evento de movimiento de ratón.
     if (isClicked) {
+        //console.log("moviendo...");
         isMoved = true;
-        const rect = gameCanvas.getBoundingClientRect();
         [xDist, yDist, dist] = getDistance(e, numChapa, numChapa, xs, ys);
     }
 
  }
 
- function handleEnd() {
+ function handleEnd(e) {
+    e.preventDefault();
+    //console.log(e.type);
     // Este código se ejecuta én el momento que el jugador termina de lanzar la chapa.
     if (isClicked) {
+        //console.log('soltando');
         isClicked = false;
         if (dist > CHAPA_RADIO && isMoved) {
             velx[numChapa] = - xDist * Math.min((dist - CHAPA_RADIO) / VEL_DIVISOR, VEL_MAX) / dist;
@@ -107,8 +113,17 @@ function checkClickBall(e, x, y, len, radio) {
 }
 
 function getDistance(e, ix, iy, x, y) {
-    let xDist = (e.offsetX / gameCanvas.clientWidth) * gameWidth - x[ix] + fsMarginLeft;
-    let yDist = (e.offsetY / gameCanvas.clientHeight) * gameHeight - resCanvas.height - y[iy] + fsMarginTop;
+    let rectLeft = 0;
+    let rectTop = 0;
+    if (e.touches) {
+        let rect = gameCanvas.getBoundingClientRect();
+        e.offsetX = e.touches[0].pageX - e.touches[0].target.offsetLeft;     
+        e.offsetY = e.touches[0].pageY - e.touches[0].target.offsetTop;
+        rectLeft = rect.left;
+        rectTop = rect.top;
+    }
+    let xDist = (e.offsetX / gameCanvas.clientWidth) * gameWidth - x[ix] + fsMarginLeft - rectLeft;
+    let yDist = (e.offsetY / gameCanvas.clientHeight) * gameHeight - resCanvas.height - y[iy] + fsMarginTop -rectTop;
     let dist = Math.sqrt(xDist * xDist + yDist * yDist);
 
     return [xDist, yDist, dist];

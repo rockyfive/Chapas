@@ -22,7 +22,7 @@ let dist;
 let turnCount = 0;
 let estado = 0;
 
-imageLogo.onload=function(){loadGame()};
+imageLogo.onload=function(){startup()};
 
 
 

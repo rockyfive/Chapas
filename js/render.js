@@ -46,6 +46,7 @@ function screenVictory(equipo) {
     const winner = equipo==1?imageJugador1:imageJugador2;
     fieldContext.drawImage(winner, CANVAS_WIDTH / 2 - 200, 300, winner.width, winner.height);
     estado = 5;
+    updateCanvas();
 }
 
 function drawGol() {
@@ -166,10 +167,10 @@ function openFullscreen(elem) {
         console.log(PROPORTION);
         console.log(fullscreenProp);
         if (PROPORTION < fullscreenProp) {
-            fsMarginTop = (elem.width - elem.width * elem.clientHeight / elem.clientWidth) / 2;
+            marginTop = (elem.width - elem.width * elem.clientHeight / elem.clientWidth) / 2;
             gameHeight = elem.width * elem.clientHeight / elem.clientWidth;
         } else {
-            fsMarginLeft = (elem.width - PROPORTION * elem.height) / 2;
+            marginLeft = (elem.width - PROPORTION * elem.height) / 2;
             gameWidth = PROPORTION * elem.height;
         }
 
@@ -182,8 +183,8 @@ function exitHandler(e) {
     if (document.fullscreenElement == null) {
     gameHeight = e.target.height;
     gameWidth = e.target.width;
-    fsMarginLeft = 0;
-    fsMarginTop = 0;
+    marginLeft = 0;
+    marginTop = 0;
     e.target.removeEventListener("fullscreenchange", exitHandler);
 }
 }

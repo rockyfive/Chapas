@@ -6,7 +6,6 @@ function loadGame(){
 	resetPos();
 	goles = [0, 0];
     turno = 1;
-    startup();
 }
 
 function resetPos() {
